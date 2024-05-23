@@ -50,7 +50,6 @@ app.post("/sales", (req, res) => {
 });
 
 // DELETE
-
 app.delete("/sales/:id", (req,res)=>{
     const salesId = req.params.id
     const q = "DELETE FROM sales WHERE id = ?"
@@ -60,6 +59,42 @@ app.delete("/sales/:id", (req,res)=>{
         return res.json("Transaction has been deleted");
     })
 })
+
+
+// UPDATE
+// app.put("/sales/:id", (req, res) => {
+//     const { id, type, quantity, total } = req.body;
+
+//     const q = "UPDATE sales SET `id` = ?, `type` = ?, `quantity` = ?, `total` = ? WHERE id = ?";
+    
+//     const salesId = req.params.id;
+
+//     const values = [id, type, quantity, total, salesId];
+
+//     db.query(q, values, (err, data) => {
+//         if (err) return res.json(err);
+//         return res.json("Transaction has been updated successfully");
+//     });
+// });
+
+// UPDATE
+app.put("/sales/:id", (req, res) => {
+    const { type, quantity, total } = req.body;
+    const salesId = req.params.id;
+
+    const q = "UPDATE sales SET `type` = ?, `quantity` = ?, `total` = ? WHERE id = ?";
+    const values = [type, quantity, total, salesId];
+
+    db.query(q, values, (err, data) => {
+        if (err) {
+            console.error('Error updating transaction:', err);
+            return res.status(500).json({ error: 'Error updating transaction' });
+        }
+        return res.json("Transaction has been updated successfully");
+    });
+});
+
+
 
 app.listen(8800, () => {
     console.log("Connected to backend!");
