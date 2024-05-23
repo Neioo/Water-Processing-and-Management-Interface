@@ -49,6 +49,18 @@ app.post("/sales", (req, res) => {
     });
 });
 
+// DELETE
+
+app.delete("/sales/:id", (req,res)=>{
+    const salesId = req.params.id
+    const q = "DELETE FROM sales WHERE id = ?"
+
+    db.query(q, [salesId], (err,data)=>{
+        if (err) return res.json(err);
+        return res.json("Transaction has been deleted");
+    })
+})
+
 app.listen(8800, () => {
     console.log("Connected to backend!");
 });
