@@ -32,12 +32,9 @@ const SalesTable = ({ sales, onDelete }) => {
                   >
                     Delete
                   </button>
-                  <button
-                    className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-                   
-                  >
-                    <Link href={`/Update/${sale.id}`}>Update</Link>
-                  </button>
+                  <Link href={`/Update/${sale.id}`} className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      Update
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -49,7 +46,4 @@ const SalesTable = ({ sales, onDelete }) => {
 };
 
 export default SalesTable;
-
-
-
 

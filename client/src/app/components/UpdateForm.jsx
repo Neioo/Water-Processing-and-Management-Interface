@@ -1,13 +1,16 @@
-// UpdateForm.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
-const UpdateForm = ({ sale }) => {
-  const [transaction, setTransaction] = useState({
-    type: sale.type,
-    datetime: sale.datetime,
-    quantity: sale.quantity,
-    total: sale.total
+const UpdateForm = ({ sale }) => { //accepts the sale as a prop
+
+  const router = useRouter();
+
+  const [transaction, setTransaction] = useState({ //Specifying their data types so the console does not return an error message, though it will work w/out it
+    type: sale.type || '',
+    datetime: sale.datetime || '',
+    quantity: sale.quantity || 0,
+    total: sale.total || ''
   });
 
   const handleChange = (e) => {
@@ -18,6 +21,7 @@ const UpdateForm = ({ sale }) => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:8800/sales/${sale.id}`, transaction);
+      router.push('/');
       console.log('Transaction updated successfully');
     } catch (err) {
       console.log('Error updating transaction:', err);
