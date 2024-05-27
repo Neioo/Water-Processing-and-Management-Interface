@@ -30,6 +30,7 @@ export default function Update({ params }) {
   if (error) {
     return <div>{error}</div>;
   }
+  
 
   return <UpdateForm sale={sale} />;
 }

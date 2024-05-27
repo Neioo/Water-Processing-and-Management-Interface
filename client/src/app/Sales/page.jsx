@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SalesTable from "../components/SalesTable";
+import AddSalesForm from "../components/AddSalesForm";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [transaction, setTransaction] = useState({  //fields
     type: "",
     datetime: "",
@@ -55,48 +57,22 @@ const Sales = () => {
   return (
     <>
       <SalesTable sales={sales} onDelete={handleDelete} />
-      {/* this will have to be a component in th future */}
-      <div className="form max-w-md mx-auto p-4 bg-white shadow-md rounded-lg">
-        <h1 className="text-2xl font-bold mb-4 text-center">Add New Transaction</h1>
-        <input
-          type="text"
-          placeholder="Type"
-          value={transaction.type}
-          onChange={handleChange}
-          name="type"
-          className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <input
-          type="datetime-local" // Use datetime-local input type for date and time
-          placeholder="DateTime"
-          value={transaction.datetime}
-          onChange={handleChange}
-          name="datetime"
-          className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <input
-          type="number"
-          placeholder="Quantity"
-          value={transaction.quantity || ""}
-          onChange={handleChange}
-          name="quantity"
-          className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <input
-          type="text"
-          placeholder="Total"
-          value={transaction.total}
-          onChange={handleChange}
-          name="total"
-          className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      <div className="flex justify-center my-4">
         <button
-          onClick={handleClick}
-          className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onClick={() => setIsModalOpen(true)}
+          className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
-          Add
+          Add New Transaction
         </button>
       </div>
+      <AddSalesForm
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        transaction={transaction}
+        handleChange={handleChange}
+        handleClick={handleClick}
+      />
+
     </>
   );
 };
