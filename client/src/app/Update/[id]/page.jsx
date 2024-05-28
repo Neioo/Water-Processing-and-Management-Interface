@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import UpdateForm from '@/app/components/UpdateForm';
 
-export default function Update({ params }) {
+export default function Update({ params, isOpen }) {
   const [sale, setSale] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,6 +30,8 @@ export default function Update({ params }) {
   if (error) {
     return <div>{error}</div>;
   }
+  
+  if (!isOpen) return null
   
 
   return <UpdateForm sale={sale} />;

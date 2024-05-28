@@ -3,10 +3,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SalesTable from "../components/SalesTable";
 import AddSalesForm from "../components/AddSalesForm";
+import UpdateForm from "../components/UpdateForm";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectedSale, setSelectedSale] = useState(null);
   const [transaction, setTransaction] = useState({  //fields
     type: "",
     datetime: "",
@@ -54,9 +57,20 @@ const Sales = () => {
     }
   };
 
+  const handleUpdateClick = (sale) => {
+    setSelectedSale(sale);
+    setIsUpdateModalOpen(true);
+  };
+
+  const handleUpdate = (updatedSale) => {
+    setSales((prevSales) =>
+      prevSales.map((sale) => (sale.id === updatedSale.id ? updatedSale : sale))
+    );
+  };
+
   return (
     <>
-      <SalesTable sales={sales} onDelete={handleDelete} />
+      <SalesTable sales={sales} onDelete={handleDelete} onUpdateClick={handleUpdateClick} />
       <div className="flex justify-center my-4">
         <button
           onClick={() => setIsModalOpen(true)}
@@ -71,6 +85,13 @@ const Sales = () => {
         transaction={transaction}
         handleChange={handleChange}
         handleClick={handleClick}
+      />
+
+      <UpdateForm
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        sale={selectedSale}
+        onUpdate={handleUpdate}
       />
 
     </>

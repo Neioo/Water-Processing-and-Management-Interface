@@ -1,11 +1,7 @@
-
-
 import Link from 'next/link';
+import React, { useEffect, useState } from "react";
 
-
-const SalesTable = ({ sales, onDelete }) => { //accepts the sales object and the onDelete function as a prop
-
-
+const SalesTable = ({ sales, onDelete, onUpdateClick }) => { //accepts the sales object and the onDelete function as a prop
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -37,10 +33,12 @@ const SalesTable = ({ sales, onDelete }) => { //accepts the sales object and the
                   >
                     Delete
                   </button>
-                  
-                  <Link href={`/Update/${sale.id}`} className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                      Update
-                  </Link>
+                  <button
+                    className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onClick={() => onUpdateClick(sale)}
+                  >
+                    Update
+                  </button>
                 </td>
               </tr>
             ))}
