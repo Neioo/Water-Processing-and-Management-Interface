@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/sales", (req, res) => {
-    const q = "SELECT * FROM sales";
+    const q = "SELECT * FROM sales ORDER BY datetime DESC";
     db.query(q, (err, data) => {
         if (err) return res.json(err);
         return res.json(data);
@@ -80,20 +80,24 @@ app.delete("/sales/:id", (req,res)=>{
 
 // UPDATE
 app.put("/sales/:id", (req, res) => {
-    const { type, quantity, total } = req.body;
+    const { type, quantity, total, updatetime } = req.body;
     const salesId = req.params.id;
 
-    const q = "UPDATE sales SET `type` = ?, `quantity` = ?, `total` = ? WHERE id = ?";
-    const values = [type, quantity, total, salesId];
+    // Convert updatetime to MySQL format (YYYY-MM-DD HH:MM:SS)
+    const formattedUpdDatetime = new Date(updatetime).toISOString().slice(0, 19).replace('T', ' ');
+
+    const q = "UPDATE sales SET `type` = ?, `quantity` = ?, `total` = ?, `updatetime` = ? WHERE id = ?";
+    const values = [type, quantity, total, formattedUpdDatetime, salesId];
 
     db.query(q, values, (err, data) => {
         if (err) {
             console.error('Error updating transaction:', err);
-            return res.status(500).json({ error: 'Error updating transaction' });
+            return res.status(500).json({ error: 'Error updating transaction', details: err });
         }
         return res.json("Transaction has been updated successfully");
     });
 });
+
 
 
 

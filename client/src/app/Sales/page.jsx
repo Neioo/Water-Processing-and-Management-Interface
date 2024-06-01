@@ -4,6 +4,9 @@ import axios from "axios";
 import SalesTable from "../components/SalesTable";
 import AddSalesForm from "../components/AddSalesForm";
 import UpdateForm from "../components/UpdateForm";
+import Dashboard from "../components/Dashboard";
+import SalesChart from "../components/SalesChart";
+import { OrdersByDayChart } from "../charts/OrdersByDay";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
@@ -14,7 +17,8 @@ const Sales = () => {
     type: "",
     datetime: "",
     quantity: null,
-    total: ""
+    total: "",
+    updatetime: ""
   });
 
   // fetches the sales data 
@@ -93,6 +97,8 @@ const Sales = () => {
         sale={selectedSale}
         onUpdate={handleUpdate}
       />
+
+      <SalesChart sales={ sales } />
 
     </>
   );

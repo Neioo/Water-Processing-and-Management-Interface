@@ -1,7 +1,10 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from "react";
+import React from 'react';
 
-const SalesTable = ({ sales, onDelete, onUpdateClick }) => { //accepts the sales object and the onDelete function as a prop
+const SalesTable = ({ sales, onDelete, onUpdateClick }) => {
+  const formatDate = (date) => {
+    return date ? new Date(date).toLocaleString() : "--";
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -13,6 +16,7 @@ const SalesTable = ({ sales, onDelete, onUpdateClick }) => { //accepts the sales
               <th className="py-2 px-4 border">ID</th>
               <th className="py-2 px-4 border">Type</th>
               <th className="py-2 px-4 border">Date & Time</th>
+              <th className="py-2 px-4 border">Updated Time</th>
               <th className="py-2 px-4 border">Quantity</th>
               <th className="py-2 px-4 border">Total</th>
               <th className="py-2 px-4 border">Actions</th>
@@ -23,7 +27,8 @@ const SalesTable = ({ sales, onDelete, onUpdateClick }) => { //accepts the sales
               <tr key={sale.id}>
                 <td className="py-2 px-4 border">{sale.id}</td>
                 <td className="py-2 px-4 border">{sale.type}</td>
-                <td className="py-2 px-4 border">{new Date(sale.datetime).toLocaleString()}</td>
+                <td className="py-2 px-4 border">{formatDate(sale.datetime)}</td>
+                <td className="py-2 px-4 border">{formatDate(sale.updatetime)}</td>
                 <td className="py-2 px-4 border">{sale.quantity}</td>
                 <td className="py-2 px-4 border">{sale.total}</td>
                 <td className="py-2 px-4 border flex space-x-2">
@@ -50,4 +55,3 @@ const SalesTable = ({ sales, onDelete, onUpdateClick }) => { //accepts the sales
 };
 
 export default SalesTable;
-
