@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SalesTable from "../components/SalesTable";
@@ -10,28 +10,42 @@ import { OrdersByDayChart } from "../charts/OrdersByDay";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
+  const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectedSale, setSelectedSale] = useState(null);
-  const [transaction, setTransaction] = useState({  //fields
+  const [transaction, setTransaction] = useState({
     type: "",
     datetime: "",
     quantity: null,
     total: "",
-    updatetime: ""
+    updatetime: "",
   });
 
-  // fetches the sales data 
-  useEffect(() => { 
+  // fetches the sales data
+  useEffect(() => {
     const fetchAllSales = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/sales"); //look through the index.js file for reference
+        const res = await axios.get("http://localhost:8800/sales");
         setSales(res.data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchAllSales();
+  }, []);
+
+  // fetches the product data
+  useEffect(() => {
+    const fetchAllProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/products");
+        setProducts(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAllProducts();
   }, []);
 
   const handleChange = (e) => {
@@ -41,21 +55,28 @@ const Sales = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8800/sales", transaction);
-      const newSale = { ...transaction, id: response.data.id }; // Add ID to the new sale w/out this id wont be displayed in the table
-      setSales((prevSales) => [...prevSales, newSale]); // Update sales state with the new sale
-      setTransaction({ type: "", datetime: "", quantity: null, total: "" }); // Clear form
+      const response = await axios.post(
+        "http://localhost:8800/sales",
+        transaction
+      );
+      const newSale = { ...transaction, id: response.data.id };
+      setSales((prevSales) => [...prevSales, newSale]);
+      setTransaction({
+        type: "",
+        datetime: "",
+        quantity: null,
+        total: "",
+      });
       console.log("Transaction added successfully");
     } catch (err) {
       console.log("Error adding transaction:", err);
     }
   };
-  
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:8800/sales/${id}`);
-      setSales((prevSales) => prevSales.filter((sale) => sale.id !== id)); // Update sales state
+      setSales((prevSales) => prevSales.filter((sale) => sale.id !== id));
     } catch (error) {
       console.log(error);
     }
@@ -74,7 +95,11 @@ const Sales = () => {
 
   return (
     <>
-      <SalesTable sales={sales} onDelete={handleDelete} onUpdateClick={handleUpdateClick} />
+      <SalesTable
+        sales={sales}
+        onDelete={handleDelete}
+        onUpdateClick={handleUpdateClick}
+      />
       <div className="flex justify-center my-4">
         <button
           onClick={() => setIsModalOpen(true)}
@@ -89,6 +114,7 @@ const Sales = () => {
         transaction={transaction}
         handleChange={handleChange}
         handleClick={handleClick}
+        products={products} // Pass products data as a prop
       />
 
       <UpdateForm
@@ -98,11 +124,9 @@ const Sales = () => {
         onUpdate={handleUpdate}
       />
 
-      <SalesChart sales={ sales } />
-
+      <SalesChart sales={sales} />
     </>
   );
 };
 
 export default Sales;
-

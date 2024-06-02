@@ -7,7 +7,7 @@ const UpdateForm = ({ isOpen, onClose, sale, onUpdate }) => {
     datetime: '',
     quantity: 0,
     total: '',
-    updatetime: ''
+    updatetime: '' // Leave this empty for automatic update
   });
   const [error, setError] = useState(null);
 
@@ -31,10 +31,14 @@ const UpdateForm = ({ isOpen, onClose, sale, onUpdate }) => {
     e.preventDefault();
     setError(null);
     try {
-      // Convert updatetime to the appropriate format (YYYY-MM-DD HH:MM:SS)
-      const formattedUpdatetime = new Date(transaction.updatetime).toISOString().slice(0, 19).replace('T', ' ');
-      const updatedTransaction = { ...transaction, updatetime: formattedUpdatetime };
+      // Get current date and time in the local timezone (Philippines)
+      const currentDate = new Date();
+      const options = { timeZone: 'Asia/Manila', hour12: false };
+      const formattedUpdatetime = currentDate.toLocaleString('en-US', options).replace(',', '');
   
+      // Format the date and time
+      const updatedTransaction = { ...transaction, updatetime: formattedUpdatetime };
+    
       await axios.put(`http://localhost:8800/sales/${sale.id}`, updatedTransaction);
       onUpdate({ ...updatedTransaction, id: sale.id });
       onClose();
@@ -44,7 +48,6 @@ const UpdateForm = ({ isOpen, onClose, sale, onUpdate }) => {
       console.error('Error details:', err);
     }
   };
-  
 
   if (!isOpen) return null;
 
@@ -61,14 +64,7 @@ const UpdateForm = ({ isOpen, onClose, sale, onUpdate }) => {
           name="type"
           className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <input
-          type="datetime-local"
-          placeholder="Update Time"
-          value={transaction.updatetime}
-          onChange={handleChange}
-          name="updatetime"
-          className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        {/* No input field for updatetime */}
         <input
           type="number"
           placeholder="Quantity"

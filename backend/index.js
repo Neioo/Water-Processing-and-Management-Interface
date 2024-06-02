@@ -1,16 +1,16 @@
-import express from "express";
-import mysql from "mysql2";
+import express from 'express';
+import mysql from 'mysql2';
 import cors from 'cors';
 
 const app = express();
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.json());
 app.use(cors());
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "1234",
-    database: "interface"
+    host: 'localhost',
+    user: 'root',
+    password: '1234',
+    database: 'interface'
 });
 
 db.connect(err => {
@@ -21,86 +21,88 @@ db.connect(err => {
     }
 });
 
-app.get("/", (req, res) => {
-    res.json("Hello, this is the backend!");
-});
-
-app.get("/sales", (req, res) => {
-    const q = "SELECT * FROM sales ORDER BY datetime DESC";
+// Sales routes
+app.get('/sales', (req, res) => {
+    const q = 'SELECT * FROM sales ORDER BY datetime DESC';
     db.query(q, (err, data) => {
         if (err) return res.json(err);
         return res.json(data);
     });
 });
 
-// Endpoint to get a sale by ID
-app.get("/sales/:id", (req, res) => {
-    const saleId = req.params.id;
-    const q = "SELECT * FROM sales WHERE id = ?";
-    db.query(q, [saleId], (err, data) => {
-        if (err) return res.json(err);
-        if (data.length === 0) return res.status(404).send('Sale not found');
-        return res.json(data[0]);
-    });
-});
-
-
-app.post("/sales", (req, res) => {
+app.post('/sales', (req, res) => {
     const { type, datetime, quantity, total } = req.body;
-
-    // Convert datetime to MySQL format (YYYY-MM-DD HH:MM:SS)
     const formattedDatetime = new Date(datetime).toISOString().slice(0, 19).replace('T', ' ');
-
-    const q = "INSERT INTO sales (`type`, `datetime`, `quantity`, `total`) VALUES (?, ?, ?, ?)";
+    const q = 'INSERT INTO sales (`type`, `datetime`, `quantity`, `total`) VALUES (?, ?, ?, ?)';
     const values = [type, formattedDatetime, quantity, total];
-
     db.query(q, values, (err, result) => {
-        if (err) {
-            console.error('Error inserting transaction:', err);
-            return res.status(500).json({ error: 'Error inserting transaction' });
-        }
-        const insertedId = result.insertId;
-        const insertedSale = { id: insertedId, type, datetime, quantity, total };
-        return res.status(201).json(insertedSale); // Return newly inserted sale data
+        if (err) return res.status(500).json({ error: 'Error inserting transaction' });
+        const insertedSale = { id: result.insertId, type, datetime, quantity, total };
+        return res.status(201).json(insertedSale);
     });
 });
 
-
-// DELETE
-app.delete("/sales/:id", (req,res)=>{
-    const salesId = req.params.id
-    const q = "DELETE FROM sales WHERE id = ?"
-
-    db.query(q, [salesId], (err,data)=>{
+app.delete('/sales/:id', (req, res) => {
+    const salesId = req.params.id;
+    const q = 'DELETE FROM sales WHERE id = ?';
+    db.query(q, [salesId], (err, data) => {
         if (err) return res.json(err);
-        return res.json("Transaction has been deleted");
-    })
-})
+        return res.json('Transaction has been deleted');
+    });
+});
 
-
-// UPDATE
-app.put("/sales/:id", (req, res) => {
+app.put('/sales/:id', (req, res) => {
     const { type, quantity, total, updatetime } = req.body;
     const salesId = req.params.id;
-
-    // Convert updatetime to MySQL format (YYYY-MM-DD HH:MM:SS)
     const formattedUpdDatetime = new Date(updatetime).toISOString().slice(0, 19).replace('T', ' ');
-
-    const q = "UPDATE sales SET `type` = ?, `quantity` = ?, `total` = ?, `updatetime` = ? WHERE id = ?";
+    const q = 'UPDATE sales SET `type` = ?, `quantity` = ?, `total` = ?, `updatetime` = ? WHERE id = ?';
     const values = [type, quantity, total, formattedUpdDatetime, salesId];
-
     db.query(q, values, (err, data) => {
-        if (err) {
-            console.error('Error updating transaction:', err);
-            return res.status(500).json({ error: 'Error updating transaction', details: err });
-        }
-        return res.json("Transaction has been updated successfully");
+        if (err) return res.status(500).json({ error: 'Error updating transaction', details: err });
+        return res.json('Transaction has been updated successfully');
     });
 });
 
+// Products routes
+app.get('/products', (req, res) => {
+    const q = 'SELECT * FROM products ORDER BY id';
+    db.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    });
+});
 
+app.post('/products', (req, res) => {
+    const { name, price } = req.body;
+    const q = 'INSERT INTO products (`name`, `price`) VALUES (?, ?)';
+    const values = [name, price];
+    db.query(q, values, (err, result) => {
+        if (err) return res.status(500).json({ error: 'Error inserting product' });
+        const insertedProduct = { id: result.insertId, name, price };
+        return res.status(201).json(insertedProduct);
+    });
+});
 
+app.delete('/products/:id', (req, res) => {
+    const productId = req.params.id;
+    const q = 'DELETE FROM products WHERE id = ?';
+    db.query(q, [productId], (err, data) => {
+        if (err) return res.json(err);
+        return res.json('Product has been deleted');
+    });
+});
+
+app.put('/products/:id', (req, res) => {
+    const { name, price } = req.body;
+    const productId = req.params.id;
+    const q = 'UPDATE products SET `name` = ?, `price` = ? WHERE id = ?';
+    const values = [name, price, productId];
+    db.query(q, values, (err, data) => {
+        if (err) return res.status(500).json({ error: 'Error updating product', details: err });
+        return res.json('Product has been updated successfully');
+    });
+});
 
 app.listen(8800, () => {
-    console.log("Connected to backend!");
+    console.log('Connected to backend!');
 });
