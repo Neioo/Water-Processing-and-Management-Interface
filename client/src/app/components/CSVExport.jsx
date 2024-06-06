@@ -43,13 +43,16 @@ class CSVExport extends React.Component {
 
     render() {
         return (
-            <div>
-                <button onClick={this.exportToCSV}>Export to CSV</button>
+            <div className="flex justify-center items-center h-screen">
+                <button
+                    onClick={this.exportToCSV}
+                    className="bg-indigo-600 text-white font-semibold py-2 px-4 rounded shadow hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50"
+                >
+                    Export to CSV
+                </button>
             </div>
         );
     }
-
-    
 }
 
 export default CSVExport;
