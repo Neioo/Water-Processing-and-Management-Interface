@@ -7,6 +7,7 @@ import UpdateForm from "../components/UpdateForm";
 import Dashboard from "../components/Dashboard";
 import SalesChart from "../components/SalesChart";
 import { OrdersByDayChart } from "../charts/OrdersByDay";
+import NewSalesTable from "@/app/components/NewSalesTable";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
@@ -95,11 +96,6 @@ const Sales = () => {
 
   return (
     <>
-      <SalesTable
-        sales={sales}
-        onDelete={handleDelete}
-        onUpdateClick={handleUpdateClick}
-      />
       <div className="flex justify-center my-4">
         <button
           onClick={() => setIsModalOpen(true)}
@@ -108,6 +104,12 @@ const Sales = () => {
           Add New Transaction
         </button>
       </div>
+      <NewSalesTable
+        sales={sales}
+        onDelete={handleDelete}
+        onUpdateClick={handleUpdateClick}
+      />
+
       <AddSalesForm
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -123,8 +125,6 @@ const Sales = () => {
         sale={selectedSale}
         onUpdate={handleUpdate}
       />
-
-      <SalesChart sales={sales} />
     </>
   );
 };

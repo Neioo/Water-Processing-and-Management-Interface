@@ -9,9 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/link": "^2.0.31",
+    "@nextui-org/navbar": "^2.0.32",
+    "@nextui-org/react": "^2.4.1",
+    "@nextui-org/system": "^2.2.1",
+    "@nextui-org/theme": "^2.2.5",
     "axios": "^1.7.0",
     "chart.js": "^4.4.3",
     "date-fns": "^3.6.0",
+    "framer-motion": "^11.2.10",
     "glob": "^7.2.3",
     "next": "14.2.3",
     "react": "^18",

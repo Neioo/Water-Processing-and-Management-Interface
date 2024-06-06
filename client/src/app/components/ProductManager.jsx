@@ -68,8 +68,8 @@ export default function ProductManager({ products, onAddProduct, onDeleteProduct
                 {products.map((product) => (
                     <div key={product.id} className="flex justify-between items-center border-b py-2">
                         <span className="text-black">{product.id || 'No ID'}</span>
-                        <span className="text-black">{product.Name || 'No Name'}</span>
-                        <span className="text-black">{product.Price || 'No Price'}</span>
+                        <span className="text-black">{product.name || 'No Name'}</span>
+                        <span className="text-black">{product.price || 'No Price'}</span>
                         <div>
                             <button
                                 onClick={() => handleEditProduct(product)}
