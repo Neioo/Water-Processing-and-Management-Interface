@@ -1,31 +1,40 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 
 const AddSalesForm = ({ isOpen, onClose, transaction, products, handleChange, handleClick }) => {
+    const [error, setError] = useState('');
+
     if (!isOpen) return null;
 
     // Function to handle change in input fields
     const handleInputChange = (e) => {
-      const { name, value } = e.target;
-  
-      // Reset quantity and total whenever the product type changes
-      if (name === 'type') {
-          handleChange({ target: { name: 'quantity', value: '' } });
-          handleChange({ target: { name: 'total', value: '' } });
-      }
-  
-      // If the name input changes, find the corresponding product and update its price
-      if (name === 'type') {
-          const selectedProduct = products.find(product => product.name === value);
-          handleChange({ target: { name: 'price', value: selectedProduct ? selectedProduct.price.toString() : '' } });
-      }
-      // If the quantity input changes, calculate the total
-      if (name === 'quantity') {
-          const total = parseFloat(transaction.price || 0) * parseInt(value || 0);
-          handleChange({ target: { name: 'total', value: total.toString() } });
-      }
-      // Update the transaction state with the input value
-      handleChange(e);
-  };
+        const { name, value } = e.target;
+
+        // Reset quantity and total whenever the product type changes
+        if (name === 'type') {
+            handleChange({ target: { name: 'quantity', value: '' } });
+            handleChange({ target: { name: 'total', value: '' } });
+        }
+
+        // If the name input changes, find the corresponding product and update its price
+        if (name === 'type') {
+            const selectedProduct = products.find(product => product.name === value);
+            handleChange({ target: { name: 'price', value: selectedProduct ? selectedProduct.price.toString() : '' } });
+        }
+        // If the quantity input changes, validate and calculate the total
+        if (name === 'quantity') {
+            if (value < 0) {
+                setError('Quantity cannot be negative');
+                return;
+            } else {
+                setError('');
+            }
+            const total = parseFloat(transaction.price || 0) * parseInt(value || 0);
+            handleChange({ target: { name: 'total', value: total.toString() } });
+        }
+        // Update the transaction state with the input value
+        handleChange(e);
+    };
   
 
     return (
