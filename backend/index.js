@@ -154,6 +154,27 @@ app.put('/accounts/:id', (req, res) => {
     });
 });
 
+app.post('/login', (req, res) => {
+    const { contactnum, password } = req.body;
+
+    const q = 'SELECT * FROM accounts WHERE contactnum = ? AND password = ?';
+    const values = [contactnum, password];
+
+    db.query(q, values, (err, results) => {
+        if (err) {
+            console.error('Error executing login query:', err);
+            return res.status(500).json({ error: 'Something went wrong. Please try again later.' });
+        }
+
+        if (results.length > 0) {
+            // User found, login successful
+            return res.status(200).json({ success: true });
+        } else {
+            // No user found with provided credentials
+            return res.status(401).json({ error: 'Invalid email or password.' });
+        }
+    });
+});
 
 
 app.listen(8800, () => {
