@@ -10,8 +10,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <NavBar style={{ width: "100% "}}/>
-        <div className="mx-auto" style={{ width: "90%" }}>
+        {/* <NavBar style={{ width: "100% "}}/> */}
+        <div className="mx-auto" style={{ width: "100%" }}>
           {children}
         </div>
       </body>

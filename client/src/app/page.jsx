@@ -3,8 +3,9 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import NewSalesTable from "@/app/components/NewSalesTable";
+import SalesDisplay from "@/app/components/SalesDisplay";
 import WelcomeName from "./components/WelcomeName ";
+import NavBar from "@/app/components/Navbar";
 
 export default function Home() {
   const [salesData, setSalesData] = useState(null);
@@ -71,13 +72,14 @@ const latestSales = salesData.slice(0, 10);
 
 return (
   <div>
+    <NavBar style={{ width: "100% "}}/>
     <div>
       <p className="text-3xl text-bold text-center pt-5 pb-4"><WelcomeName /> </p>
       <div className="grid grid-cols-4 gap-4 mx-auto">
         {/* Remaining code */}
       </div>
       </div>
-    <div className="grid grid-cols-4 gap-4 mx-auto">
+    <div className="grid grid-cols-4 gap-4 mx-20">
       <div>
         <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
           <p className="font-normal text-gray-700 dark:text-gray-400">Total Sales</p>
@@ -105,8 +107,8 @@ return (
 
       
     </div>
-    <div className="mt-5 mr-6">
-        <NewSalesTable sales={latestSales} />
+    <div className="mt-5 mx-20">
+        <SalesDisplay sales={latestSales} />
       </div>
     </div>
 

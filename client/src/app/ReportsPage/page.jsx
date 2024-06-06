@@ -1,10 +1,13 @@
 import React from 'react';
 import CustomersByDayChart from '../charts/CustomersByDay';
 import ProfitsByDayChart from '../charts/OrdersByDay';
+import NavBar from "@/app/components/Navbar";
 
 const ReportsPage = () => {
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <>
+    <NavBar style={{ width: "100% " }} />
+    <div className="p-6 bg-gray-100 min-h-screen mx-8">
       <h1 className="text-3xl font-bold mb-6 text-center">Reports</h1>
       
       <div className="bg-white p-4 rounded-lg shadow-md mb-6">
@@ -21,6 +24,8 @@ const ReportsPage = () => {
         </div>
       </div>
     </div>
+    </>
+
   );
 }
 

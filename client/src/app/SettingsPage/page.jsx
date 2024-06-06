@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import NavBar from "@/app/components/Navbar";
 
 const SettingsPage = () => {
     const [accounts, setAccounts] = useState([]);
@@ -137,12 +138,6 @@ const SettingsPage = () => {
                                             className="bg-red-500 hover:bg-red-600 text-white py-1 px-2 rounded-md mr-2"
                                         >
                                             Delete
-                                        </button>
-                                        <button
-                                            onClick={() => handleUpdateAccount(account.id, account)}
-                                            className="bg-green-500 hover:bg-green-600 text-white py-1 px-2 rounded-md"
-                                        >
-                                            Update
                                         </button>
                                     </td>
                                 </tr>

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductManager from '../components/ProductManager'
+import NavBar from "@/app/components/Navbar";
 
 export default function ProductPage() {
     const [products, setProducts] = useState([]);

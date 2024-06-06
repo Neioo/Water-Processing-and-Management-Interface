@@ -1,13 +1,14 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SalesTable from "../components/SalesTable";
 import AddSalesForm from "../components/AddSalesForm";
 import UpdateForm from "../components/UpdateForm";
-import Dashboard from "../components/Dashboard";
-import SalesChart from "../components/SalesChart";
-import { OrdersByDayChart } from "../charts/OrdersByDay";
 import NewSalesTable from "@/app/components/NewSalesTable";
+import { toast } from 'sonner';
+import ToastNotifications from '../components/Toast'
+import CSVExport from "../components/CSVExport";
+import NavBar from "@/app/components/Navbar";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
@@ -68,9 +69,11 @@ const Sales = () => {
         quantity: null,
         total: "",
       });
-      console.log("Transaction added successfully");
+      toast('Transaction added successfully');
+      toast.success('Transaction added successfully');
     } catch (err) {
       console.log("Error adding transaction:", err);
+      toast.error('Error adding transaction');
     }
   };
 
@@ -78,8 +81,10 @@ const Sales = () => {
     try {
       await axios.delete(`http://localhost:8800/sales/${id}`);
       setSales((prevSales) => prevSales.filter((sale) => sale.id !== id));
+      toast.success('Transaction deleted successfully');
     } catch (error) {
       console.log(error);
+      toast.error('Error deleting transaction');
     }
   };
 
@@ -96,7 +101,9 @@ const Sales = () => {
 
   return (
     <>
-      <NavBar style={{ width: "100% " }} />
+    <NavBar style={{ width: "100% " }} />
+      <CSVExport/>
+      <ToastNotifications />
       <div className="flex justify-center my-4">
         <button
           onClick={() => setIsModalOpen(true)}
