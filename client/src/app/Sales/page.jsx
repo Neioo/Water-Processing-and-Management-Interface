@@ -101,38 +101,42 @@ const Sales = () => {
 
   return (
     <>
-    <NavBar style={{ width: "100% " }} />
-      <CSVExport/>
-      <ToastNotifications />
-      <div className="flex justify-center my-4">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-        >
-          Add New Transaction
-        </button>
+      <NavBar style={{ width: "100% " }} />
+      <div style={{ width: "80% ", margin: "auto" }}>
+        <div className="flex justify-end gap-4">
+          <CSVExport />
+          <ToastNotifications />
+          <div className="mt-5">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-green-600 text-white font-semibold py-2 px-4 rounded shadow hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50"
+            >
+              Add New Transaction
+            </button>
+          </div>
+        </div>
+        <SalesTable
+          sales={sales}
+          onDelete={handleDelete}
+          onUpdateClick={handleUpdateClick}
+        />
+
+        <AddSalesForm
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          transaction={transaction}
+          handleChange={handleChange}
+          handleClick={handleClick}
+          products={products} // Pass products data as a prop
+        />
+
+        <UpdateForm
+          isOpen={isUpdateModalOpen}
+          onClose={() => setIsUpdateModalOpen(false)}
+          sale={selectedSale}
+          onUpdate={handleUpdate}
+        />
       </div>
-      <SalesTable
-        sales={sales}
-        onDelete={handleDelete}
-        onUpdateClick={handleUpdateClick}
-      />
-
-      <AddSalesForm
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        transaction={transaction}
-        handleChange={handleChange}
-        handleClick={handleClick}
-        products={products} // Pass products data as a prop
-      />
-
-      <UpdateForm
-        isOpen={isUpdateModalOpen}
-        onClose={() => setIsUpdateModalOpen(false)}
-        sale={selectedSale}
-        onUpdate={handleUpdate}
-      />
     </>
   );
 };
