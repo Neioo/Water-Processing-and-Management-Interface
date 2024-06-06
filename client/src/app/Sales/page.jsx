@@ -7,6 +7,7 @@ import UpdateForm from "../components/UpdateForm";
 import NewSalesTable from "@/app/components/NewSalesTable";
 import { toast } from 'sonner';
 import ToastNotifications from '../components/Toast'
+import CSVExport from "../components/CSVExport";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
@@ -99,6 +100,7 @@ const Sales = () => {
 
   return (
     <>
+      <CSVExport/>
       <ToastNotifications />
       <div className="flex justify-center my-4">
         <button

@@ -33,7 +33,7 @@ app.get('/sales', (req, res) => {
 app.post('/sales', (req, res) => {
     const { type, datetime, quantity, total } = req.body;
     const formattedDatetime = new Date(datetime).toISOString().slice(0, 19).replace('T', ' ');
-    const q = 'INSERT INTO sales (`type`, `datetime`, `quantity`, `total`) VALUES (?, ?, ?, ?)';
+    const q = 'INSERT INTO sales (type, datetime, quantity, total) VALUES (?, ?, ?, ?)';
     const values = [type, formattedDatetime, quantity, total];
     db.query(q, values, (err, result) => {
         if (err) return res.status(500).json({ error: 'Error inserting transaction' });
@@ -55,7 +55,7 @@ app.put('/sales/:id', (req, res) => {
     const { type, quantity, total, updatetime } = req.body;
     const salesId = req.params.id;
     const formattedUpdDatetime = new Date(updatetime).toISOString().slice(0, 19).replace('T', ' ');
-    const q = 'UPDATE sales SET `type` = ?, `quantity` = ?, `total` = ?, `updatetime` = ? WHERE id = ?';
+    const q = 'UPDATE sales SET type = ?, quantity = ?, total = ?, updatetime = ? WHERE id = ?';
     const values = [type, quantity, total, formattedUpdDatetime, salesId];
     db.query(q, values, (err, data) => {
         if (err) return res.status(500).json({ error: 'Error updating transaction', details: err });
@@ -74,7 +74,7 @@ app.get('/products', (req, res) => {
 
 app.post('/products', (req, res) => {
     const { name, price } = req.body;
-    const q = 'INSERT INTO products (`name`, `price`) VALUES (?, ?)';
+    const q = 'INSERT INTO products (name, price) VALUES (?, ?)';
     const values = [name, price];
     db.query(q, values, (err, result) => {
         if (err) return res.status(500).json({ error: 'Error inserting product' });
@@ -95,13 +95,66 @@ app.delete('/products/:id', (req, res) => {
 app.put('/products/:id', (req, res) => {
     const { name, price } = req.body;
     const productId = req.params.id;
-    const q = 'UPDATE products SET `name` = ?, `price` = ? WHERE id = ?';
+    const q = 'UPDATE products SET name = ?, price = ? WHERE id = ?';
     const values = [name, price, productId];
     db.query(q, values, (err, data) => {
         if (err) return res.status(500).json({ error: 'Error updating product', details: err });
         return res.json('Product has been updated successfully');
     });
 });
+
+
+// Accounts routes
+app.get('/accounts', (req, res) => {
+    const q = 'SELECT * FROM accounts ORDER BY id';
+    db.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    });
+});
+
+app.post('/accounts', (req, res) => {
+    const { first_name, last_name, contactnum, type, password } = req.body;
+    const q = 'INSERT INTO accounts (first_name, last_name, contactnum, type, password) VALUES (?, ?, ?, ?, ?)';
+    const values = [first_name, last_name, contactnum, type, password];
+    db.query(q, values, (err, result) => {
+        if (err) {
+            console.error('Error inserting account:', err.message); // Log the actual error message
+            return res.status(500).json({ error: 'Error inserting account', details: err.message }); // Send the error message in the response
+        }
+        const insertedAccount = { id: result.insertId, first_name, last_name, contactnum, type, password };
+        return res.status(201).json(insertedAccount);
+    });
+});
+
+
+
+app.delete('/accounts/:id', (req, res) => {
+    const accountId = req.params.id;
+    const q = 'DELETE FROM accounts WHERE id = ?';
+    db.query(q, [accountId], (err, data) => {
+        if (err) return res.json(err);
+        return res.json('Account has been deleted');
+    });
+});
+
+app.put('/accounts/:id', (req, res) => {
+    const { first_name, last_name, contactnum, password, type } = req.body;
+
+    if (!first_name || !last_name || !contactnum || !password || !type) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const accountId = req.params.id;
+    const q = 'UPDATE accounts SET first_name = ?, last_name = ?, contactnum = ?, password = ?, type = ? WHERE id = ?';
+    const values = [first_name, last_name, contactnum, password, type, accountId];
+    db.query(q, values, (err, data) => {
+        if (err) return res.status(500).json({ error: 'Error updating account', details: err });
+        return res.json('Account has been updated successfully');
+    });
+});
+
+
 
 app.listen(8800, () => {
     console.log('Connected to backend!');

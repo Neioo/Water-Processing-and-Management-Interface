@@ -17,6 +17,7 @@
     "axios": "^1.7.0",
     "chart.js": "^4.4.3",
     "date-fns": "^3.6.0",
+    "file-saver": "^2.0.5",
     "framer-motion": "^11.2.10",
     "glob": "^7.2.3",
     "next": "14.2.3",
