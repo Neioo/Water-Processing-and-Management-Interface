@@ -47,6 +47,8 @@ export default function ProductPage() {
     };
 
     return (
+        <>
+        <NavBar style={{ width: "100% "}}/>
         <div>
             <ProductManager
                 products={products}
@@ -55,5 +57,6 @@ export default function ProductPage() {
                 onUpdateProduct={handleUpdateProduct}
             />
         </div>
+        </>
     );
 }
