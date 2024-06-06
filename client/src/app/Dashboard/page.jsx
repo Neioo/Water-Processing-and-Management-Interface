@@ -3,8 +3,8 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import SalesDisplay from "@/app/components/SalesDisplay";
-import WelcomeName from "./components/WelcomeName ";
+import SalesDisplay from "../components/SalesDisplay";
+import WelcomeName from "../components/WelcomeName";
 import NavBar from "@/app/components/Navbar";
 
 export default function Home() {
