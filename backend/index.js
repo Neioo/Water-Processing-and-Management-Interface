@@ -30,6 +30,17 @@ app.get('/sales', (req, res) => {
     });
 });
 
+app.get('/type', (req, res) => {
+    const contactnum = req.params.contactnum;
+    const q = 'SELECT type FROM accounts WHERE contactnum = ?';
+    db.query(q, [contactnum], (err, data) => {
+        if (err) return res.status(500).json({ error: 'Error retrieving account type', details: err });
+        if (data.length === 0) return res.status(404).json({ error: 'Account not found' });
+        const accountType = data[0].type;
+        return res.send(accountType.toString());
+    });
+});
+
 app.post('/sales', (req, res) => {
     const { type, datetime, quantity, total } = req.body;
     const formattedDatetime = new Date(datetime).toISOString().slice(0, 19).replace('T', ' ');

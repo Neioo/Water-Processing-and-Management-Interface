@@ -12,13 +12,15 @@ function LoginPage() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        
+
         try {
             const response = await axios.post('http://localhost:8800/login', { contactnum, password });
             if (response.data.success) {
                 // If login is successful, you can redirect the user to another page or perform any necessary action
                 console.log('Login successful');
-                router.push('/')
+                const accTypeResponse = await axios.get(`http://localhost:8800/type?contactnum=${contactnum}`);
+                const acc_type = accTypeResponse.data;;
+                router.push('/Dashboard?type=' + acc_type);
             } else {
                 setError('Invalid phone number or password');
             }
