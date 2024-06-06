@@ -51,66 +51,58 @@ export default function Home() {
   }
 
   // Calculate total sales, average profit, and profit for the day
-let totalSales = 0;
-let totalProfit = 0;
-let totalOrders = 0;
-const today = new Date().toLocaleDateString();
-let profitForTheDay = 0;
+  let totalSales = 0;
+  let totalProfit = 0;
+  let totalOrders = 0;
+  const today = new Date().toLocaleDateString();
+  let profitForTheDay = 0;
 
-salesData.forEach((sale) => {
-  totalSales += sale.total;
-  totalProfit += sale.total - sale.cost;
-  totalOrders++;
-  if (new Date(sale.datetime).toLocaleDateString() === today) {
-    profitForTheDay += sale.total;
-  }
-});
+  salesData.forEach((sale) => {
+    totalSales += sale.total;
+    totalProfit += sale.total - sale.cost;
+    totalOrders++;
+    if (new Date(sale.datetime).toLocaleDateString() === today) {
+      profitForTheDay += sale.total;
+    }
+  });
 
-const averageProfit = totalSales / totalOrders;
+  const averageProfit = totalSales / totalOrders;
 
-const latestSales = salesData.slice(0, 10);
+  const latestSales = salesData.slice(0, 10);
 
-return (
-  <div>
-    <NavBar style={{ width: "100% "}}/>
+  
+  return (
     <div>
-      <p className="text-3xl text-bold text-center pt-5 pb-4"><WelcomeName /> </p>
-      <div className="grid grid-cols-4 gap-4 mx-auto">
-        {/* Remaining code */}
-      </div>
-      </div>
-    <div className="grid grid-cols-4 gap-4 mx-20">
+      <NavBar style={{ width: "100%" }} />
       <div>
-        <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-          <p className="font-normal text-gray-700 dark:text-gray-400">Total Sales</p>
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${totalSales.toFixed(2)}</h5>
-        </a>
+        <p className="text-3xl font-bold text-center pt-5 pb-4"><WelcomeName /></p>
+        <div className="grid grid-cols-4 gap-4 mx-auto">
+          {/* Remaining code */}
+        </div>
       </div>
-      <div>
-        <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-          <p className="font-normal text-gray-700 dark:text-gray-400">Average Profit</p>
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${averageProfit.toFixed(2)}</h5>
-        </a>
+      <div className="flex justify-center items-center mx-20 mt-10 space-x-4">
+        <div>
+          <a href="#" className="block max-w-md p-8 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <p className="font-normal text-gray-700 dark:text-gray-400">Total Sales</p>
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">PHP {totalSales.toFixed(2)}</h5>
+          </a>
+        </div>
+        <div>
+          <a href="#" className="block max-w-md p-8 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <p className="font-normal text-gray-700 dark:text-gray-400">Average Profit</p>
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">PHP {averageProfit.toFixed(2)}</h5>
+          </a>
+        </div>
+        <div>
+          <a href="#" className="block max-w-md p-8 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <p className="font-normal text-gray-700 dark:text-gray-400">Total Orders</p>
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{totalOrders}</h5>
+          </a>
+        </div>
       </div>
-      <div>
-        <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-          <p className="font-normal text-gray-700 dark:text-gray-400">Profit for Today</p>
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${profitForTheDay.toFixed(2)}</h5>
-        </a>
-      </div>
-      <div>
-        <a href="#" className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-          <p className="font-normal text-gray-700 dark:text-gray-400">Total Orders</p>
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{totalOrders}</h5>
-        </a>
-      </div>
-
-      
-    </div>
-    <div className="mt-5 mx-20">
+      <div className="mt-5 mx-20">
         <SalesDisplay sales={latestSales} />
       </div>
     </div>
-
-);
+  );
 }
