@@ -6,7 +6,6 @@ import NavBar from "@/app/components/Navbar";
 const ReportsPage = () => {
   return (
     <>
-    <NavBar style={{ width: "100% " }} />
     <div className="p-6 bg-gray-100 min-h-screen mx-8">
       <h1 className="text-3xl font-bold mb-6 text-center">Reports</h1>
       

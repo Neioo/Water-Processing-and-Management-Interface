@@ -13,19 +13,22 @@ function LoginPage() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        const expectedContactNum = '1234567890'; // Replace with the expected phone number
+        const expectedPassword = 'password123'; // Replace with the expected password
+
+        console.log('Contact Number:', contactnum);
+        console.log('Password:', password);
+
         try {
-            const response = await axios.post('http://localhost:8800/login', { contactnum, password });
-            if (response.data.success) {
-                // If login is successful, you can redirect the user to another page or perform any necessary action
+            if (contactnum === expectedContactNum && password === expectedPassword) {
                 console.log('Login successful');
-                const accTypeResponse = await axios.get(`http://localhost:8800/type?contactnum=${contactnum}`);
-                const acc_type = accTypeResponse.data;;
-                router.push('/Dashboard?type=' + acc_type);
+                router.push('/Dashboard');
             } else {
                 setError('Invalid phone number or password');
             }
         } catch (error) {
             console.error('Error logging in:', error);
+            console.error('Error response:', error.response);
             setError('Something went wrong. Please try again later.');
         }
     };
@@ -48,9 +51,6 @@ function LoginPage() {
                     <div>
                         <div className="flex items-center justify-between">
                             <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
-                            <div className="text-sm">
-                                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
-                            </div>
                         </div>
                         <div className="mt-2">
                             <input id="password" name="password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
